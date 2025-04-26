@@ -10,14 +10,17 @@ Welcome! You are the Lead Developer for the **Markdown Translator CLI** project.
 *   **Primary Use Case:** Provide an efficient way for users on Windows to translate technical or content-heavy Markdown documents, generating output suitable for review or further processing, while abstracting the complexities of LLM APIs and file handling through scripting.
 *   **Core Tools & Frameworks:** Leverage the external `llm` command-line tool (by Simon Willison) for flexible interaction with various LLM providers, **Pester** as the testing framework for PowerShell TDD, and standard PowerShell cmdlets for file/JSON handling.
 
-## 2. Current Project Status (Initial State)
+## 2. Current Project Status (As of YYYY-MM-DD - End of Session)
 
-*   **Repository:** TBD (e.g., `YourGitHubUsername/MarkdownTranslatorCLI-PS` - needs creation on GitHub). **Starts completely empty.**
-*   **Main Branch (`main`):** Will contain all successfully integrated and reviewed code. Development starts by initializing the repository.
-*   **Completed & Merged Features:** None. This is the absolute beginning.
+*   **Repository:** Created (`Salah-Sal/cli_translator_PowerShell`) and initialized locally. Linked to remote origin.
+*   **Main Branch (`main`):** Contains initial project structure and documentation updates.
+*   **Completed & Merged Features:**
+    *   Issue #1: Project Setup & Foundational Structure (Completed, except `.env.example` creation and Pester discovery issue from root).
 *   **Work In Progress / Next Steps:**
-    *   **(FIRST TASK): Project Setup & Foundational Structure (PowerShell)** - *Requires New Issue (e.g., #1)*. Includes initializing the Git repository, setting up the basic directory structure, installing/configuring Pester, creating `.gitignore`, initial `README.md`, and `CONTRIBUTING.md`.
-    *   See the project's GitHub Issues (once created) for the active task log.
+    *   **Issue #2: Implement Core Configuration Loading.**
+        *   Status: **In Progress**. Test file (`Tests/Config.Tests.ps1`) created. First failing test for environment variable loading added. Initial implementation file (`Scripts/Lib/Config.ps1`) created with basic function.
+        *   Next: Implement minimum code in `Get-TranslatorConfiguration` to make the first test pass (Green phase).
+    *   **(Issue #3): Implement Basic Article Discovery** (Pending completion of #2).
 
 ## 3. Technical Overview
 
@@ -109,15 +112,15 @@ Within this specific TDD workflow using PowerShell/Pester, your responsibilities
 
 The initial plan focuses on setting up the foundation and implementing core features piece by piece using TDD:
 
-1.  **(NEXT TASK - Issue #1): Project Setup & Foundational Structure:**
-    *   *Tests:* A minimal `Project.Tests.ps1` file with a single passing Pester test (`Describe 'Project Setup' { It 'Should load Pester' { 1 | Should -Be 1 } }`).
-    *   *Code:* Initialize Git repo (`git init`), create directory structure (`Scripts/Lib`, `Tests`, `Articles`, etc.), create initial `.gitignore`, `README.md`, `CONTRIBUTING.md`, `LICENSE`, `.env.example`. Ensure Pester can be run (`Invoke-Pester`).
+1.  **(Issue #1): Project Setup & Foundational Structure:** - **COMPLETED** (Caveats: `.env.example` missing, Pester discovery issue from root remains - see `CONTRIBUTING.md`).
+    *   *Tests:* Minimal `Project.Tests.ps1` created.
+    *   *Code:* Git repo initialized, structure created, core files (`.gitignore`, `README.md`, `CONTRIBUTING.md`, `LICENSE`) created. Pester updated.
     *   *Labels:* `chore`, `setup`
-2.  **(Issue #2): Implement Core Configuration Loading:**
-    *   *Tests:* (`Config.Tests.ps1`) Use Pester mocks (`Mock`) to simulate environment variables. Test loading required paths (`$ArticlesDir`, `$JobsDir`). Test default values. Test reading API key (mock env var). Test error handling for missing required config.
-    *   *Code:* (`Scripts/Lib/Config.ps1`) Write a PowerShell function (e.g., `Get-TranslatorConfig`) to read environment variables (using `$env:VAR_NAME`), potentially check a `.env` file (more complex in pure PS, might skip initially or use a simple `Get-Content | ConvertFrom-StringData` approach if format allows), and return a configuration hashtable/object.
+2.  **(NEXT TASK - Issue #2): Implement Core Configuration Loading:** - **IN PROGRESS**
+    *   *Tests:* (`Config.Tests.ps1`) - **Started.** First failing test for `ARTICLES_DIR` env var written.
+    *   *Code:* (`Scripts/Lib/Config.ps1`) - **Started.** Basic function `Get-TranslatorConfiguration` defined.
     *   *Labels:* `feat`, `config`
-3.  **(Issue #3): Implement Basic Article Discovery:**
+3.  **(Issue #3): Implement Basic Article Discovery:** - **Pending**
     *   *Tests:* (`ArticleManagement.Tests.ps1`) Mock `Get-ChildItem`. Test finding `.md` files. Test finding no files. Test handling non-existent directory (mock should throw error). Test filtering non-md files.
     *   *Code:* (`Scripts/Lib/ArticleManagement.ps1`) Write function (e.g., `Get-MarkdownArticle`) using `Get-ChildItem -Filter *.md`.
     *   *Labels:* `feat`, `article-handling`
@@ -216,14 +219,14 @@ Mocked llm.exe call now intercepted by Pester, allowing the test to pass.
 
 ---
 
-## Appendix C: Git and GitHub Current State (Initial)
+## Appendix C: Git and GitHub Current State (As of YYYY-MM-DD - End of Session)
 
-*   **Repository:** Freshly initialized locally (`git init`). Remote repository on GitHub needs to be created and linked (`git remote add origin ...`, `git push -u origin main`).
-*   **Branch:** Local `main` branch exists.
-*   **History:** Empty or contains only the very first commit (e.g., adding `.gitignore` and initial files from Issue #1).
-*   **Status:** Working directory clean after initial setup commit.
+*   **Repository:** Local repository initialized and linked to remote `origin` (`Salah-Sal/cli_translator_PowerShell`).
+*   **Branch:** Local `main` branch exists and tracks `origin/main`.
+*   **History:** Contains initial project setup commit and documentation update commits.
+*   **Status:** Working directory clean after last commit/push.
 *   **Tags:** None.
-*   **Issues:** None (Issue #1 needs to be created).
+*   **Issues:** Assumed Issue #1 created manually. Issue #2 needs to be created.
 *   **Pull Requests:** None.
 
 ---
