@@ -26,7 +26,10 @@ function Get-TranslatorConfiguration {
     if ([string]::IsNullOrEmpty($JobsDir)) {
         $JobsDir = $DefaultJobsDir # Assign default if env var was null or empty
     }
-    $PromptsDir = $env:PROMPTS_DIR
+    $PromptsDir = $env:PROMPTS_DIR # Read env var first
+    if ([string]::IsNullOrEmpty($PromptsDir)) {
+        $PromptsDir = $DefaultPromptsDir # Assign default if env var was null or empty
+    }
     # $OpenAiApiKey = $env:OPENAI_API_KEY
 
     # Construct and return configuration object

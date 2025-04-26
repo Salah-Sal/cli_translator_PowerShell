@@ -100,6 +100,16 @@ Describe 'Get-TranslatorConfiguration' {
             $Config = Get-TranslatorConfiguration @Params
             $Config.JobsDir | Should -Be $ExpectedPath
         }
+
+        # New test for default PromptsDir
+        It 'Should return the default Prompts path relative to project root when PROMPTS_DIR env var is not set' {
+            $ExpectedPath = Join-Path $script:ProjectRoot 'Prompts'
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.PromptsDir | Should -Be $ExpectedPath
+        }
     }
 
     # Add other Context blocks and It blocks later following TDD
