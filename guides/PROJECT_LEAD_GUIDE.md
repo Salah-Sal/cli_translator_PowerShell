@@ -13,14 +13,12 @@ Welcome! You are the Lead Developer for the **Markdown Translator CLI** project.
 ## 2. Current Project Status (As of YYYY-MM-DD - End of Session)
 
 *   **Repository:** Created (`Salah-Sal/cli_translator_PowerShell`) and initialized locally. Linked to remote origin.
-*   **Main Branch (`main`):** Contains initial project structure and documentation updates.
+*   **Main Branch (`main`):** Contains initial project structure, completed Issue #2, and documentation updates.
 *   **Completed & Merged Features:**
     *   Issue #1: Project Setup & Foundational Structure (Completed, except `.env.example` creation and Pester discovery issue from root).
+    *   Issue #2: Implement Core Configuration Loading (Completed and committed directly to `main`).
 *   **Work In Progress / Next Steps:**
-    *   **Issue #2: Implement Core Configuration Loading.**
-        *   Status: **In Progress**. Test file (`Tests/Config.Tests.ps1`) created. First failing test for environment variable loading added. Initial implementation file (`Scripts/Lib/Config.ps1`) created with basic function.
-        *   Next: Implement minimum code in `Get-TranslatorConfiguration` to make the first test pass (Green phase).
-    *   **(Issue #3): Implement Basic Article Discovery** (Pending completion of #2).
+    *   **(NEXT TASK - Issue #3): Implement Basic Article Discovery** (To be started on a new feature branch).
 
 ## 3. Technical Overview
 
@@ -116,11 +114,11 @@ The initial plan focuses on setting up the foundation and implementing core feat
     *   *Tests:* Minimal `Project.Tests.ps1` created.
     *   *Code:* Git repo initialized, structure created, core files (`.gitignore`, `README.md`, `CONTRIBUTING.md`, `LICENSE`) created. Pester updated.
     *   *Labels:* `chore`, `setup`
-2.  **(NEXT TASK - Issue #2): Implement Core Configuration Loading:** - **IN PROGRESS**
-    *   *Tests:* (`Config.Tests.ps1`) - **Started.** First failing test for `ARTICLES_DIR` env var written.
-    *   *Code:* (`Scripts/Lib/Config.ps1`) - **Started.** Basic function `Get-TranslatorConfiguration` defined.
+2.  **(Issue #2): Implement Core Configuration Loading:** - **COMPLETED** (Committed directly to `main`).
+    *   *Tests:* (`Config.Tests.ps1`) - Completed (8 tests passing).
+    *   *Code:* (`Scripts/Lib/Config.ps1`) - Completed (`Get-TranslatorConfiguration` implemented).
     *   *Labels:* `feat`, `config`
-3.  **(Issue #3): Implement Basic Article Discovery:** - **Pending**
+3.  **(NEXT TASK - Issue #3): Implement Basic Article Discovery:** - **Pending**
     *   *Tests:* (`ArticleManagement.Tests.ps1`) Mock `Get-ChildItem`. Test finding `.md` files. Test finding no files. Test handling non-existent directory (mock should throw error). Test filtering non-md files.
     *   *Code:* (`Scripts/Lib/ArticleManagement.ps1`) Write function (e.g., `Get-MarkdownArticle`) using `Get-ChildItem -Filter *.md`.
     *   *Labels:* `feat`, `article-handling`
@@ -223,10 +221,10 @@ Mocked llm.exe call now intercepted by Pester, allowing the test to pass.
 
 *   **Repository:** Local repository initialized and linked to remote `origin` (`Salah-Sal/cli_translator_PowerShell`).
 *   **Branch:** Local `main` branch exists and tracks `origin/main`.
-*   **History:** Contains initial project setup commit and documentation update commits.
+*   **History:** Contains commits for Issue #1 setup, Issue #2 implementation, and documentation updates.
 *   **Status:** Working directory clean after last commit/push.
 *   **Tags:** None.
-*   **Issues:** Assumed Issue #1 created manually. Issue #2 needs to be created.
+*   **Issues:** Assumed Issue #1 created manually. Issue #2 completed. Issue #3 needs to be created.
 *   **Pull Requests:** None.
 
 ---
