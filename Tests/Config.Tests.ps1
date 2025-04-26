@@ -19,12 +19,16 @@ Describe 'Get-TranslatorConfiguration' {
 
     Context 'Loads paths from environment variables' {
         
-        # Store original env var value before each test and restore after
+        # Store original env var values before each test and restore after
         $OriginalArticlesDir = $null
+        $OriginalJobsDir = $null # Add variable for JOBS_DIR
 
         BeforeEach {
             $OriginalArticlesDir = $env:ARTICLES_DIR
             $env:ARTICLES_DIR = 'C:\TestArticlesFromEnv' # Test value
+
+            $OriginalJobsDir = $env:JOBS_DIR # Setup for JOBS_DIR
+            $env:JOBS_DIR = 'C:\TestJobsFromEnv' # Test value for JOBS_DIR
         }
 
         AfterEach {
@@ -33,6 +37,13 @@ Describe 'Get-TranslatorConfiguration' {
                 $env:ARTICLES_DIR = $OriginalArticlesDir
             } else {
                 Remove-Item Env:\ARTICLES_DIR -ErrorAction SilentlyContinue
+            }
+
+            # Teardown for JOBS_DIR
+            if ($null -ne $OriginalJobsDir) {
+                $env:JOBS_DIR = $OriginalJobsDir
+            } else {
+                Remove-Item Env:\JOBS_DIR -ErrorAction SilentlyContinue
             }
         }
 
@@ -43,6 +54,15 @@ Describe 'Get-TranslatorConfiguration' {
             }
             $Config = Get-TranslatorConfiguration @Params
             $Config.ArticlesDir | Should -Be 'C:\TestArticlesFromEnv'
+        }
+
+        # New failing test for JOBS_DIR
+        It 'Should return the JOBS_DIR path from the environment variable when set' {
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.JobsDir | Should -Be 'C:\TestJobsFromEnv'
         }
     }
     
