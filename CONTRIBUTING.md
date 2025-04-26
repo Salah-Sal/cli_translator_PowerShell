@@ -31,3 +31,4 @@ A diagnostic test was performed by creating a minimal test file (`minimal.Tests.
 
 **Tooling Note:**
 The AI assistant encountered limitations executing certain commands involving interactive prompts, multi-line inputs, absolute paths outside the workspace for file edits, and potentially complex PowerShell variable/command chaining via its `run_terminal_cmd` tool. Manual execution was used as a workaround for these specific commands. 
+*   **Commit Verification:** Additionally, the assistant may sometimes fail to recognize if a `git commit` command succeeded on the first try, potentially due to incomplete terminal output capture. It might retry the command unnecessarily. Developer confirmation of successful commits is helpful in these cases. 
