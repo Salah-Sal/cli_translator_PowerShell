@@ -72,6 +72,26 @@ Describe 'Get-TranslatorConfiguration' {
         }
     }
     
+    Context 'Uses default paths when environment variables are NOT set' {
+        
+        BeforeEach {
+            # Ensure environment variables that have defaults are UNSET for these tests
+            Remove-Item Env:\ARTICLES_DIR -ErrorAction SilentlyContinue
+            Remove-Item Env:\JOBS_DIR -ErrorAction SilentlyContinue
+            Remove-Item Env:\PROMPTS_DIR -ErrorAction SilentlyContinue
+        }
+
+        # Test uses $script:ProjectRoot defined in BeforeAll
+        It 'Should return the default Articles path relative to project root when ARTICLES_DIR env var is not set' {
+            $ExpectedPath = Join-Path $script:ProjectRoot 'Articles'
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.ArticlesDir | Should -Be $ExpectedPath
+        }
+    }
+
     # Add other Context blocks and It blocks later following TDD
 
 } 

@@ -18,9 +18,12 @@ function Get-TranslatorConfiguration {
     $DefaultPromptsDir = Join-Path $ProjectRoot "Prompts"
 
     # Read from Environment Variables or use Defaults
-    $ArticlesDir = $env:ARTICLES_DIR
+    $ArticlesDir = $env:ARTICLES_DIR # Read env var first
+    if ([string]::IsNullOrEmpty($ArticlesDir)) {
+        $ArticlesDir = $DefaultArticlesDir # Assign default if env var was null or empty
+    }
     $JobsDir = $env:JOBS_DIR
-    $PromptsDir = $env:PROMPTS_DIR # Add reading PROMPTS_DIR
+    $PromptsDir = $env:PROMPTS_DIR
     # $OpenAiApiKey = $env:OPENAI_API_KEY
 
     # Construct and return configuration object
