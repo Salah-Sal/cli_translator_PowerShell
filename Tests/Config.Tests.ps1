@@ -21,30 +21,27 @@ Describe 'Get-TranslatorConfiguration' {
         
         # Store original env var values before each test and restore after
         $OriginalArticlesDir = $null
-        $OriginalJobsDir = $null # Add variable for JOBS_DIR
+        $OriginalJobsDir = $null
+        $OriginalPromptsDir = $null # Add variable for PROMPTS_DIR
 
         BeforeEach {
             $OriginalArticlesDir = $env:ARTICLES_DIR
-            $env:ARTICLES_DIR = 'C:\TestArticlesFromEnv' # Test value
+            $env:ARTICLES_DIR = 'C:\TestArticlesFromEnv'
 
-            $OriginalJobsDir = $env:JOBS_DIR # Setup for JOBS_DIR
-            $env:JOBS_DIR = 'C:\TestJobsFromEnv' # Test value for JOBS_DIR
+            $OriginalJobsDir = $env:JOBS_DIR
+            $env:JOBS_DIR = 'C:\TestJobsFromEnv'
+
+            $OriginalPromptsDir = $env:PROMPTS_DIR # Setup for PROMPTS_DIR
+            $env:PROMPTS_DIR = 'C:\TestPromptsFromEnv' # Test value for PROMPTS_DIR
         }
 
         AfterEach {
-            # Restore original value or remove if it didn't exist
-            if ($null -ne $OriginalArticlesDir) {
-                $env:ARTICLES_DIR = $OriginalArticlesDir
-            } else {
-                Remove-Item Env:\ARTICLES_DIR -ErrorAction SilentlyContinue
-            }
-
-            # Teardown for JOBS_DIR
-            if ($null -ne $OriginalJobsDir) {
-                $env:JOBS_DIR = $OriginalJobsDir
-            } else {
-                Remove-Item Env:\JOBS_DIR -ErrorAction SilentlyContinue
-            }
+            # Restore ArticlesDir
+            if ($null -ne $OriginalArticlesDir) { $env:ARTICLES_DIR = $OriginalArticlesDir } else { Remove-Item Env:\ARTICLES_DIR -ErrorAction SilentlyContinue }
+            # Restore JobsDir
+            if ($null -ne $OriginalJobsDir) { $env:JOBS_DIR = $OriginalJobsDir } else { Remove-Item Env:\JOBS_DIR -ErrorAction SilentlyContinue }
+            # Teardown for PROMPTS_DIR
+            if ($null -ne $OriginalPromptsDir) { $env:PROMPTS_DIR = $OriginalPromptsDir } else { Remove-Item Env:\PROMPTS_DIR -ErrorAction SilentlyContinue }
         }
 
         It 'Should return the ARTICLES_DIR path from the environment variable when set' {
@@ -63,6 +60,15 @@ Describe 'Get-TranslatorConfiguration' {
             }
             $Config = Get-TranslatorConfiguration @Params
             $Config.JobsDir | Should -Be 'C:\TestJobsFromEnv'
+        }
+
+        # New failing test for PROMPTS_DIR
+        It 'Should return the PROMPTS_DIR path from the environment variable when set' {
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.PromptsDir | Should -Be 'C:\TestPromptsFromEnv'
         }
     }
     

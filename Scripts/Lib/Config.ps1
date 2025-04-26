@@ -18,17 +18,17 @@ function Get-TranslatorConfiguration {
     $DefaultPromptsDir = Join-Path $ProjectRoot "Prompts"
 
     # Read from Environment Variables or use Defaults
-    $ArticlesDir = $env:ARTICLES_DIR # Test requires reading this
-    $JobsDir = $env:JOBS_DIR # Add reading JOBS_DIR
-    # $PromptsDir = $env:PROMPTS_DIR -or $DefaultPromptsDir
+    $ArticlesDir = $env:ARTICLES_DIR
+    $JobsDir = $env:JOBS_DIR
+    $PromptsDir = $env:PROMPTS_DIR # Add reading PROMPTS_DIR
     # $OpenAiApiKey = $env:OPENAI_API_KEY
 
     # Construct and return configuration object
     $Config = [PSCustomObject]@{
         ProjectRoot   = $ProjectRoot
         ArticlesDir   = $ArticlesDir
-        JobsDir       = $JobsDir # Add JobsDir to the output object
-        # PromptsDir    = $PromptsDir
+        JobsDir       = $JobsDir
+        PromptsDir    = $PromptsDir # Add PromptsDir to the output object
         # OpenAiApiKey  = $OpenAiApiKey
     }
 
