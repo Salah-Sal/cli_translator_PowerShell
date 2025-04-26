@@ -90,6 +90,16 @@ Describe 'Get-TranslatorConfiguration' {
             $Config = Get-TranslatorConfiguration @Params
             $Config.ArticlesDir | Should -Be $ExpectedPath
         }
+
+        # New test for default JobsDir
+        It 'Should return the default Jobs path relative to project root when JOBS_DIR env var is not set' {
+            $ExpectedPath = Join-Path $script:ProjectRoot 'Jobs'
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.JobsDir | Should -Be $ExpectedPath
+        }
     }
 
     # Add other Context blocks and It blocks later following TDD
