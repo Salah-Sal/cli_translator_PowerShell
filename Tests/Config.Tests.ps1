@@ -136,6 +136,18 @@ Describe 'Get-TranslatorConfiguration' {
             $Config = Get-TranslatorConfiguration @Params
             $Config.OpenAiApiKey | Should -Be 'sk-TestKeyFromEnv12345'
         }
+
+        It 'Should return $null or empty string for OPENAI_API_KEY when the environment variable is not set' {
+            # Explicitly remove the variable for this test
+            Remove-Item Env:\OPENAI_API_KEY -ErrorAction SilentlyContinue
+
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            # Check if it's null or empty
+            $Config.OpenAiApiKey | Should -BeNullOrEmpty
+        }
     }
 
     # Add other Context blocks and It blocks later following TDD
