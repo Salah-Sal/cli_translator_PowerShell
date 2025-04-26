@@ -1,177 +1,171 @@
-**Project Implementation Plan: Markdown Translator CLI (PowerShell)**
+**Project Implementation Plan: Markdown Translator CLI (PowerShell) - v1.3**
 
 **Prepared For:** Project Lead Developer
-**Date:** 2025-04-25 (Placeholder)
-**Version:** 1.0
+**Date:** 2025-04-26 (Placeholder - Updated)
+**Version:** 1.3 (Adds Real-World UX Testing Stages)
 
 **1. Introduction**
 
-This document outlines the proposed implementation plan for the Markdown Translator CLI project. The goal is to build a PowerShell-based command-line tool for translating Markdown files using external LLM tools, adhering strictly to Test-Driven Development (TDD) principles with the Pester framework. This plan breaks down the project into logical phases and tasks, each corresponding to a planned GitHub Issue.
+This document outlines the proposed implementation plan for the Markdown Translator CLI project. The goal is to build a PowerShell-based command-line tool for translating Markdown files using external LLM tools, adhering strictly to Test-Driven Development (TDD) principles with Pester. This plan breaks down the project into logical phases and tasks, incorporating stages for **Real-World User Experience (UX) Testing** to ensure the CLI is practical and user-friendly. **Phase 1 is complete.**
 
 **2. Project Goal Recap**
 
-To create a robust, testable PowerShell CLI application for translating Markdown files via the `llm` CLI, featuring chunking, model selection, prompt usage, and job management capabilities.
+To create a robust, testable, **and user-friendly** PowerShell CLI application for translating Markdown files via the `llm` CLI, featuring chunking, model selection, prompt usage, and job management capabilities.
 
 **3. Core Methodology**
 
 *   **Language:** PowerShell 7+
-*   **Testing:** Pester (TDD: Red-Green-Refactor)
+*   **Testing:**
+    *   Pester (TDD: Red-Green-Refactor for unit/integration tests)
+    *   **Manual UX Testing** (Real-world scenarios)
 *   **Version Control:** Git, GitHub
 *   **Workflow:** Issue-Driven Development via GitHub CLI (`gh`), Conventional Commits, Mandatory PRs for merges to `main`.
 *   **External Tools:** `llm`, `jq`, `git`, `gh`.
 
 **4. Assumptions**
 
-*   The development environment (Windows 11) is set up as per the Project Lead Guide (PowerShell 7+, Git, gh, llm, jq installed and configured).
-*   Pester module is installed and functional.
-*   Developer has necessary permissions on the shared GitHub account/repository.
-*   The Lead Developer will provide detailed Issue content (including specific test scenarios) before the developer starts each task.
+*   Development environment is set up.
+*   Pester module is functional.
+*   Necessary permissions are available.
+*   Lead Developer provides detailed Issue content.
+*   **Developer has access to configured `llm` CLI with at least one working API key for UX testing phases.**
 
 **5. Phased Implementation Plan**
 
-*(Note: Issue numbers are sequential placeholders)*
+*(Note: Issue numbers are sequential placeholders. UX Testing tasks are added.)*
 
-**Phase 1: Foundation & Setup (Issues #1-2)**
+**Phase 1: Foundation & Setup (Issues #1-2) - ✅ COMPLETED**
 
 *   **Goal:** Establish the repository structure, core tooling, configuration handling, and basic testing setup.
-*   **Issue #1: Project Setup & Foundational Structure**
-    *   **TDD Focus:** Create a minimal Pester test (`Project.Tests.ps1`) to ensure the test runner works.
-    *   **Tasks:**
-        *   Initialize local Git repository.
-        *   Create remote GitHub repository via `gh repo create`.
-        *   Create initial directory structure (`Scripts/Lib`, `Tests`, `Articles`, etc.).
-        *   Create initial `.gitignore`, `README.md`, `CONTRIBUTING.md`, `LICENSE`.
-        *   Create `.env.example`.
-        *   Commit and push initial structure to `main`.
-    *   **Review:** Lead reviews repository setup, file structure, and basic Pester execution.
-*   **Issue #2: Implement Core Configuration Loading**
-    *   **TDD Focus:** (`Config.Tests.ps1`) Write failing tests (using Pester `Mock` for environment variables) for loading essential paths (Articles, Jobs, Prompts), handling defaults, reading an API key (mocked), and erroring on missing required configs.
-    *   **Tasks:**
-        *   Implement `Get-TranslatorConfig` function in `Scripts/Lib/Config.ps1`.
-        *   Implement logic to read from environment variables (`$env:`).
-        *   (Optional Stretch) Add simple logic to read a key=value `.env` file if needed.
-        *   Ensure function returns a consistent object/hashtable.
-        *   Refactor based on passing tests.
-    *   **Review:** Lead reviews TDD cycle (commits), Pester tests, mocking strategy, and PowerShell implementation for config loading.
+*   **Issue #1: Project Setup & Foundational Structure** - ✅ **Done**
+*   **Issue #2: Implement Core Configuration Loading** - ✅ **Done**
 
-**Phase 2: Core Article & Chunking Logic (Issues #3-5)**
+**Phase 2: Core Article & Chunking Logic (Issues #3-5) - ▶️ NEXT**
 
-*   **Goal:** Implement the ability to find, read, and split Markdown articles into manageable units.
-*   **Issue #3: Implement Basic Article Discovery**
-    *   **TDD Focus:** (`ArticleManagement.Tests.ps1`) Write failing tests mocking `Get-ChildItem` to verify finding `.md` files, handling empty/non-existent directories, and filtering.
-    *   **Tasks:**
-        *   Implement `Get-MarkdownArticle` function in `Scripts/Lib/ArticleManagement.ps1` using `Get-ChildItem`.
-        *   Refactor for clarity.
-    *   **Review:** Lead reviews TDD cycle, tests, and file discovery logic.
+*   **Goal:** Implement the ability to find, read, and split Markdown articles.
+*   **Issue #3: Implement Basic Article Discovery** - ▶️ **Next Task**
+    *   *(Details as before - Implement `Get-MarkdownArticle`)*
 *   **Issue #4: Implement Basic Article Reading**
-    *   **TDD Focus:** (`ArticleManagement.Tests.ps1`) Write failing tests mocking `Get-Content` to verify reading file content, handling encoding (assume UTF-8 initially), and errors for non-existent files.
-    *   **Tasks:**
-        *   Implement `Read-MarkdownArticle` function in `Scripts/Lib/ArticleManagement.ps1` using `Get-Content`.
-        *   Refactor.
-    *   **Review:** Lead reviews TDD cycle, tests, and file reading logic.
+    *   *(Details as before - Implement `Read-MarkdownArticle`)*
 *   **Issue #5: Implement Basic Chunking Logic (Paragraph Split)**
-    *   **TDD Focus:** (`Chunking.Tests.ps1`) Write failing tests for splitting multi-paragraph strings based on blank lines (using `-split` or regex). Test edge cases (empty string, no blank lines, multiple blank lines).
-    *   **Tasks:**
-        *   Implement `Split-MarkdownToParagraph` function in `Scripts/Lib/Chunking.ps1`.
-        *   Refactor string splitting logic.
-    *   **Review:** Lead reviews TDD cycle, tests (especially edge cases), and chunking implementation.
+    *   *(Details as before - Implement `Split-MarkdownToParagraph`)*
 
 **Phase 3: LLM Interaction & Basic Translation (Issues #6-7)**
 
-*   **Goal:** Establish the ability to send text to the `llm` tool and get a response back.
+*   **Goal:** Connect to the `llm.exe` tool and establish a basic, single-chunk translation pathway.
 *   **Issue #6: Implement LLM Interaction Wrapper**
-    *   **TDD Focus:** (`LLMInteraction.Tests.ps1`) Write failing tests using Pester `Mock` for `llm.exe`. Test passing correct arguments (prompt, model). Test handling stdout, stderr, and exit codes from the mocked process.
-    *   **Tasks:**
-        *   Implement `Invoke-LLMPrompt` function in `Scripts/Lib/LLMInteraction.ps1` to execute `llm.exe` externally.
-        *   Handle process execution and output capture.
-        *   Refactor process calling logic.
-    *   **Review:** Lead reviews TDD cycle, comprehensive mocking of the external process, argument handling, and error condition checks.
+    *   *(Details as before - Implement `Invoke-LLMPrompt`, mock `llm.exe` heavily)*
 *   **Issue #7: Implement Basic Single-Chunk Translation Flow**
-    *   **TDD Focus:** (`TranslationFlow.Tests.ps1` - new file or integrated) Write failing integration-style tests (mocking file read, chunking, and LLM calls) for translating a single, simple chunk of text.
-    *   **Tasks:**
-        *   Create a simple function/script section (maybe in `Start-MarkdownTranslatorCli.ps1` initially) that orchestrates:
-            *   Reading a (mocked) simple article string.
-            *   Splitting it into one (mocked) chunk.
-            *   Calling `Invoke-LLMPrompt` (mocked) with the chunk.
-            *   Returning the (mocked) result.
-    *   **Review:** Lead reviews the basic orchestration logic and how mocks are used to test the flow without actual file I/O or LLM calls.
+    *   *(Details as before - Test orchestration logic using mocks)*
 
-**Phase 4: CLI Structure & User Interaction (Issues #8-TBD)**
+**Phase 4: CLI Structure & Initial User Interaction (Issues #8-~11)**
 
-*   **Goal:** Build the main CLI entry point and basic user interaction menus.
+*   **Goal:** Build the main CLI entry point and allow users to select input files and basic options through terminal menus.
 *   **Issue #8: Implement Main CLI Entry Point & Basic Menu**
-    *   **TDD Focus:** (`Cli.Tests.ps1`) Write tests for parsing basic command-line arguments (if any initially). Mock helper functions (`Get-MarkdownArticle`, `Show-MainMenu`) and test that the main script calls them appropriately. Test basic menu display and input handling (mock `Read-Host`).
+    *   *(Details as before - Structure `Start-MarkdownTranslatorCli.ps1`, basic `Show-MainMenu`, menu loop)*
+*   **Issue #9 (Example): Implement Article Selection Menu**
+    *   **Overall Fit:** Provides the first interactive step for the user: choosing the input file.
+    *   **TDD Focus:** Test the menu display (mock `Get-MarkdownArticle`), user input handling (mock `Read-Host`), and state update (setting a selected article variable).
+    *   **Tasks:** Implement `Show-ArticleSelectionMenu` in `UIHelpers.ps1`. Integrate call into main menu loop. Store selected article path.
+*   **Issue #10 (Example): Implement Model Selection Menu (Basic)**
+    *   **Overall Fit:** Allows user selection of the LLM (initially maybe just a hardcoded list).
+    *   **TDD Focus:** Test menu display, input handling, state update.
+    *   **Tasks:** Implement `Show-ModelSelectionMenu`. Integrate. Store selection.
+*   **Issue #11 (Example): Implement Prompt Selection Menu (Basic)**
+    *   **Overall Fit:** Allows user selection of a system prompt file.
+    *   **TDD Focus:** Test listing files from `Prompts/` (mock `Get-ChildItem`), menu display, input handling, state update.
+    *   **Tasks:** Implement `Show-PromptSelectionMenu`. Integrate. Store selection.
+
+**Phase 5: First End-to-End Workflow & UX Test (Issues #12-13)**
+
+*   **Goal:** Combine the components developed so far to achieve a *basic* end-to-end translation of a *single chunk* (the first paragraph) of a *real* article, and perform initial usability testing.
+*   **Issue #12: Integrate Basic End-to-End Translation (First Chunk)**
+    *   **Overall Fit:** Connects the user selections (article, model) to the backend logic (read, chunk, translate) for the simplest possible case.
+    *   **TDD Focus:** Primarily integration tests mocking components, but verifying the *flow* that uses the selected article/model state to call `Read-MarkdownArticle`, `Split-MarkdownToParagraph` (getting first chunk), and `Invoke-LLMPrompt`. Test that the final (mocked) output is displayed or saved appropriately.
+    *   **Tasks:** Modify `Start-MarkdownTranslatorCli.ps1` or a dedicated function. Add a "Start Translation" option to the main menu (enabled when selections are made). Implement the logic to: get config, get user selections, read selected article, get first chunk, get selected model, invoke LLM, display result to console.
+*   **Issue #13: Initial Real-World UX Test (Single Chunk)**
+    *   **Overall Fit:** Provides the first critical feedback loop based on actual usage, identifying usability issues, unexpected behavior with real files/LLMs, and unclear instructions/output **before** implementing more complex logic like multi-chunk handling.
+    *   **TDD Focus:** **None.** This is manual testing.
     *   **Tasks:**
-        *   Structure `Start-MarkdownTranslatorCli.ps1` as the main entry point.
-        *   Implement a basic `Show-MainMenu` function in `Scripts/Lib/UIHelpers.ps1` (with TDD).
-        *   Implement simple menu loop logic in the main script.
-    *   **Review:** Lead reviews CLI structure, argument parsing (if applicable), menu logic, and testability of the UI components (via mocking).
-*   **Further Issues in Phase 4:**
-    *   Implement Article Selection Menu (calling `Get-MarkdownArticle`).
-    *   Implement Model Selection (potentially hardcoded list initially, later using `llm models`).
-    *   Implement Prompt Selection (listing files from `Prompts/`).
-    *   Integrate selections into the main state/variables.
+        *   Manually run `Start-MarkdownTranslatorCli.ps1` from the PowerShell terminal.
+        *   Use the menus to select a *real* (but potentially short) Markdown file from the `Articles` directory.
+        *   Select a *real*, configured model using the menu.
+        *   Select a *real* prompt file (or a "none" option).
+        *   Trigger the "Start Translation" option.
+        *   **Evaluate:**
+            *   Is the menu navigation clear and intuitive?
+            *   Are prompts (`Read-Host`) easy to understand?
+            *   Does it correctly translate the *first paragraph* using the selected model/prompt via the `llm` tool?
+            *   Is the output displayed clearly in the terminal?
+            *   Are there any unexpected errors or hangs?
+            *   Does it handle basic errors gracefully (e.g., article not found - although this should be prevented by selection)?
+        *   **Document:** Create a new GitHub Issue (e.g., Issue #14 - UX Feedback Round 1) detailing findings, bugs, and usability suggestions based on this manual test.
+    *   **Review:** Lead Dev reviews the documented UX feedback. Necessary fixes/improvements might spawn new `fix:` or `refactor:` Issues before proceeding.
 
-**Phase 5: Full Translation Workflow & Chunk Handling (Issues TBD)**
+**Phase 6: Full Translation Workflow & Chunk Handling (Issues #14-TBD)**
 
-*   **Goal:** Integrate all components for a multi-chunk translation process.
-*   **Tasks (Driven by TDD Issues):**
-    *   Implement loop in main script/function to process all chunks from `Split-MarkdownToParagraph`.
-    *   Call `Invoke-LLMPrompt` for each chunk.
-    *   Implement logic to assemble results (simple concatenation initially).
-    *   Add basic progress indication (e.g., "Translating chunk X of Y...").
-    *   Implement saving the final assembled translation to a file.
-    *   Refine chunking logic (character limits, overlap - more complex TDD needed).
-    *   Implement two-stage translation (fast pass, then refinement pass with prompt).
+*   **Goal:** Implement the complete multi-chunk translation process and saving the final result.
+*   **Issue #14 (Example): Implement Multi-Chunk Processing Loop & Assembly**
+    *   *(Details as before - Implement loop, call LLM for each chunk, basic concatenation)*
+*   **Issue #15 (Example): Implement Saving Final Translation**
+    *   *(Details as before - Save assembled string to output file)*
+*   **Issue #16 (Example): Refine Chunking (Size/Overlap)**
+    *   *(Details as before - Implement more advanced splitting)*
 
-**Phase 6: Job Management & Resumption (Issues TBD)**
+**Phase 7: Second End-to-End Workflow & UX Test (Issue #17)**
 
-*   **Goal:** Add persistence for translation jobs, allowing status tracking and resumption.
-*   **Tasks (Driven by TDD Issues):**
-    *   Implement Job Directory Creation (`Scripts/Lib/JobManagement.ps1`).
-    *   Implement Metadata Handling (using `jq.exe` via PowerShell, requires careful mocking/testing). Write/Read `metadata.json`.
-    *   Implement saving intermediate chunk results to job directories.
-    *   Implement logic to check job status and identify resumable chunks.
-    *   Implement `Resume-TranslationJob` functionality.
-    *   Implement `Show-JobArchive` menu/listing.
+*   **Goal:** Test the complete multi-chunk translation workflow with real files and LLMs, focusing on output quality, performance, and handling of larger files.
+*   **Issue #17: Full Workflow Real-World UX Test**
+    *   **TDD Focus:** **None.** Manual testing.
+    *   **Tasks:**
+        *   Manually run `Start-MarkdownTranslatorCli.ps1`.
+        *   Select a *longer, more complex* real Markdown file.
+        *   Select real models/prompts.
+        *   Run the full translation.
+        *   **Evaluate:**
+            *   Does the chunking work correctly (visually inspect output file)?
+            *   Is the progress indication helpful (if implemented)?
+            *   How is the performance for a larger file?
+            *   Is the final assembled output file correct and well-formatted?
+            *   Does it handle potential errors during *one* of the chunk translations (e.g., LLM API error)? How does it report this?
+            *   Any regressions from the first UX test?
+        *   **Document:** Update the UX Feedback Issue or create a new one (e.g., Issue #18 - UX Feedback Round 2) with findings.
+    *   **Review:** Lead Dev reviews feedback. Prioritize critical bug fixes before moving to Job Management.
 
-**Phase 7: Enhancements & Refinement (Issues TBD)**
+**Phase 8: Job Management & Resumption (Issues #18-TBD)**
 
-*   **Goal:** Improve usability, error handling, and robustness.
-*   **Tasks (Driven by TDD Issues):**
-    *   Implement advanced error handling and logging.
-    *   Improve UI (potentially using modules like `Terminal.Gui` for PowerShell if desired, or just better text formatting).
-    *   Add more sophisticated chunking strategies.
-    *   Implement retry logic for LLM calls (`run_with_retry` equivalent in PowerShell).
-    *   Refactor into PowerShell Modules (`.psm1`) for better organization.
+*   **Goal:** Add persistence and resumption capabilities.
+*   **Tasks:** Implement Job Directory creation, Metadata Handling (using `jq`), saving intermediate chunks, status checking, resumption logic.
+
+**Phase 9: Job Management UX Test (Issue #X)**
+
+*   **Goal:** Test the job management features (starting, interrupting, resuming, viewing) from a user perspective.
+*   **Issue #X: Job Management Real-World UX Test**
+    *   **TDD Focus:** **None.** Manual testing.
+    *   **Tasks:**
+        *   Start a translation, interrupt it (Ctrl+C).
+        *   Run the tool again, use the "Resume Job" feature.
+        *   Verify it picks up correctly based on created job files/metadata.
+        *   Test viewing job archives/status.
+        *   Test deleting jobs.
+        *   **Evaluate:** Is the job management workflow intuitive? Is status information clear? Does resumption work reliably?
+        *   **Document:** Feedback in relevant Issue.
+    *   **Review:** Lead Dev reviews feedback.
+
+**Phase 10: Enhancements & Refinement (Issues TBD)**
+
+*   **Goal:** Improve usability, error handling, robustness based on prior phases and UX feedback.
+*   **Tasks:** Advanced error handling, UI improvements, retry logic, refactoring into Modules. Final polish based on overall UX.
 
 **6. Timeline**
 
-This is a sequential plan. Progress depends on the developer's speed and complexity encountered. Each Issue represents a distinct unit of work. The focus is on completing each phase with tested, working code before moving to the next major dependency. A rough goal might be:
-
-*   Phase 1: 1-2 days
-*   Phase 2: 2-3 days
-*   Phase 3: 2-3 days
-*   Subsequent phases depend heavily on complexity discovered.
+*   Timeline estimates need slight adjustment to account for UX testing and potential rework based on feedback. Each UX test phase might add 0.5-1 day depending on findings.
 
 **7. Review Process**
 
-*   **Issue Definition:** Lead provides detailed Issue content -> Developer Creates Issue.
-*   **TDD Cycle:** Developer commits frequently (`test:`, `feat:`, `refactor:`) -> Lead provides feedback on approach/progress via Issue comments or brief syncs.
-*   **Pull Request:** Developer creates PR linking Issue -> Lead performs detailed code/test/workflow review -> Merge on approval.
+*   Includes review of documented UX testing feedback in addition to PR reviews.
 
 **8. Potential Risks & Challenges**
 
-*   **External Tool Changes:** `llm` CLI or `jq` changes could break interactions. Requires robust mocking and testing of the wrappers.
-*   **PowerShell Complexity:** Advanced PowerShell scripting (complex mocking, robust error handling, module creation) can be challenging.
-*   **Pester Mocking:** Mocking external processes (`llm.exe`, `jq.exe`) effectively in Pester requires careful setup.
-*   **LLM API Issues:** Rate limits, API errors, inconsistent output from LLMs. Requires error handling and potentially retry logic.
-*   **Chunking Complexity:** Getting chunking (especially with overlap and context preservation) correct is non-trivial.
-*   **Performance:** PowerShell script performance for very large files or many chunks might become a concern.
+*   Adds risk: UX testing might reveal significant usability issues requiring larger refactoring than anticipated. Subjectivity of "good" UX.
 
----
-
-Please review this plan for feasibility, logical flow, TDD integration, and alignment with the project goals and constraints. Provide feedback on phasing, task breakdown, potential omissions, or areas requiring further detail.
-
-
----
