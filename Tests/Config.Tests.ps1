@@ -112,6 +112,32 @@ Describe 'Get-TranslatorConfiguration' {
         }
     }
 
+    Context 'Loads API Key from environment variable' {
+
+        $OriginalApiKey = $null
+
+        BeforeEach {
+            $OriginalApiKey = $env:OPENAI_API_KEY
+            $env:OPENAI_API_KEY = 'sk-TestKeyFromEnv12345' # Test value
+        }
+
+        AfterEach {
+            if ($null -ne $OriginalApiKey) {
+                $env:OPENAI_API_KEY = $OriginalApiKey
+            } else {
+                Remove-Item Env:\OPENAI_API_KEY -ErrorAction SilentlyContinue
+            }
+        }
+
+        It 'Should return the OPENAI_API_KEY from the environment variable when set' {
+            $Params = @{
+                ProjectRoot = $script:ProjectRoot
+            }
+            $Config = Get-TranslatorConfiguration @Params
+            $Config.OpenAiApiKey | Should -Be 'sk-TestKeyFromEnv12345'
+        }
+    }
+
     # Add other Context blocks and It blocks later following TDD
 
 } 

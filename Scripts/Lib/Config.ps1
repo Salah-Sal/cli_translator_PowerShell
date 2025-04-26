@@ -30,15 +30,15 @@ function Get-TranslatorConfiguration {
     if ([string]::IsNullOrEmpty($PromptsDir)) {
         $PromptsDir = $DefaultPromptsDir # Assign default if env var was null or empty
     }
-    # $OpenAiApiKey = $env:OPENAI_API_KEY
+    $OpenAiApiKey = $env:OPENAI_API_KEY # Read API key (no default needed)
 
     # Construct and return configuration object
     $Config = [PSCustomObject]@{
         ProjectRoot   = $ProjectRoot
         ArticlesDir   = $ArticlesDir
         JobsDir       = $JobsDir
-        PromptsDir    = $PromptsDir # Add PromptsDir to the output object
-        # OpenAiApiKey  = $OpenAiApiKey
+        PromptsDir    = $PromptsDir
+        OpenAiApiKey  = $OpenAiApiKey # Add API key to the output object
     }
 
     Write-Verbose "Loaded configuration: $($Config | ConvertTo-Json -Depth 3)"
