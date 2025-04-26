@@ -12,15 +12,15 @@ This project follows a strict Test-Driven Development (TDD) approach using Peste
     *   Essential files created: `.gitignore`, `README.md`, `LICENSE`, `CONTRIBUTING.md`, `Tests/Project.Tests.ps1`.
     *   Pester v5.7.1 installed. (Note: A discovery issue exists when running `Invoke-Pester` from the project root - see `CONTRIBUTING.md` for details).
     *   `CONTRIBUTING.md` updated with detailed workflow, TDD guidelines, and troubleshooting notes.
-*   **Core Configuration Loading (Issue #2):** In progress.
-    *   Test file `Tests/Config.Tests.ps1` created with initial failing tests for environment variable loading.
-    *   Implementation file `Scripts/Lib/Config.ps1` created with the basic `Get-TranslatorConfiguration` function definition.
+*   **Core Configuration Loading (Issue #2):** Completed.
+    *   Test file `Tests/Config.Tests.ps1` created and implemented with 8 tests covering env vars and default paths for `ArticlesDir`, `JobsDir`, `PromptsDir`, and `OpenAiApiKey`.
+    *   Implementation file `Scripts/Lib/Config.ps1` created with `Get-TranslatorConfiguration` function, accepting mandatory `ProjectRoot` parameter.
 
 ## Next Steps
 
-*   Complete the implementation of `Get-TranslatorConfiguration` following the TDD cycle (Green and Refactor steps for Issue #2).
-*   Resolve the Pester discovery issue noted in `CONTRIBUTING.md`.
-*   Proceed with subsequent issues (e.g., Article Discovery).
+*   Resolve the Pester discovery issue noted in `CONTRIBUTING.md` (Ongoing investigation).
+*   Proceed with **Issue #3: Implement Basic Article Discovery**.
+*   Address creation of `.env.example` file (skipped earlier due to tool limitations).
 
 ## Getting Started
 
