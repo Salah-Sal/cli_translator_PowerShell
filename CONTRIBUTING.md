@@ -4,12 +4,51 @@ Welcome, Developer! This document is your primary guide for contributing to the 
 
 We use a strict **Test-Driven Development (TDD)** methodology with **Pester** and specific **Git/GitHub CLI workflows**. Please read this guide carefully before starting any development task.
 
+---
+
+## Project Overview for Contributors
+
+**What are we building?**
+
+We are creating a command-line tool using **PowerShell** that runs on Windows. Its main purpose is to translate **Markdown files** (like this one, or technical documentation) from one language to another.
+
+**How does it work?**
+
+Instead of implementing the translation AI ourselves, we rely on an external command-line tool called **`llm`** (created by Simon Willison). Our PowerShell script will:
+
+1.  Allow the user to select a Markdown file (`.md`).
+2.  Let the user choose which AI model to use (via the `llm` tool).
+3.  Potentially break the Markdown file into smaller "chunks" if it's too large for the AI model.
+4.  Call the `llm` tool for each chunk to perform the translation.
+5.  Reassemble the translated chunks into a final output file.
+6.  Manage these translation tasks as "jobs" so they can potentially be tracked or resumed.
+
+**Why PowerShell?**
+
+We are building this specifically for a Windows environment, leveraging the native scripting capabilities of PowerShell for file handling, user interaction (menus in the terminal), and calling external tools like `llm` and `jq` (for handling structured data like JSON).
+
+**How do we build it? (Our Process)**
+
+*   **Test-Driven Development (TDD):** We write automated tests *before* we write the actual code. We use a PowerShell testing tool called **Pester**. This ensures our code works correctly and prevents regressions. The cycle is: Write a Failing Test (Red) -> Write Code to Pass Test (Green) -> Improve Code (Refactor).
+*   **Issues First:** All work starts with a GitHub Issue assigned by the Lead Developer.
+*   **Branching:** We use Git feature branches for every task.
+*   **Command Line Only:** We use `git` and `gh` (GitHub CLI) commands in the PowerShell terminal for all version control and GitHub interactions.
+*   **Commits:** We use a specific format called Conventional Commits for clear history.
+*   **Pull Requests (PRs):** All code must be reviewed via a PR before merging into the `main` branch.
+
+**Your Role:**
+
+As a developer on this project, you will be taking specific tasks (defined in GitHub Issues) and implementing them using PowerShell, following the TDD process and workflow detailed in this document. You'll write Pester tests, implement PowerShell functions, and interact with Git and GitHub via the command line.
+
+---
+
 ## Table of Contents
 
-1.  [Getting Started](#1-getting-started)
+1.  [Project Overview for Contributors](#project-overview-for-contributors) (You are here)
+2.  [Getting Started](#1-getting-started)
     *   [Prerequisites](#prerequisites)
     *   [Initial Setup](#initial-setup)
-2.  [Development Workflow](#2-development-workflow)
+3.  [Development Workflow](#2-development-workflow)
     *   [Issue Assignment](#issue-assignment)
     *   [Creating the Issue](#creating-the-issue)
     *   [Branching](#branching)
@@ -19,12 +58,17 @@ We use a strict **Test-Driven Development (TDD)** methodology with **Pester** an
     *   [Creating a Pull Request (PR)](#creating-a-pull-request-pr)
     *   [Code Review](#code-review)
     *   [Merging and Cleanup](#merging-and-cleanup)
-3.  [Coding Standards](#3-coding-standards)
+4.  [Coding Standards](#3-coding-standards)
     *   [PowerShell Style](#powershell-style)
     *   [Pester Tests](#pester-tests)
     *   [Error Handling](#error-handling)
-4.  [Commit Message Conventions](#4-commit-message-conventions)
-5.  [Tooling](#5-tooling)
+5.  [Commit Message Conventions](#4-commit-message-conventions)
+6.  [Tooling](#5-tooling)
+7.  [AI Assistant Session Startup Checklist](#6-ai-assistant-session-startup-checklist) (*Note: Section renumbered*)
+8.  [Troubleshooting Notes](#troubleshooting-notes) (*Note: Section renumbered*)
+    *   [Initial Pester Discovery Issue (Resolved)](#initial-pester-discovery-issue-resolved)
+    *   [Testing Dot-Sourced Scripts (Issue #2 - Config.ps1)](#testing-dot-sourced-scripts-issue-2---configps1)
+
 
 ## 1. Getting Started
 
@@ -215,12 +259,25 @@ We use **Conventional Commits**. This is mandatory for clear history and potenti
 *   **GitHub Interaction:** `gh` CLI
 *   **Testing:** `Invoke-Pester` command
 *   **LLM Interaction:** `llm.exe` CLI (called from scripts)
+    *   For detailed guidance on using `llm` within PowerShell, refer to the `resources/llm_PowerShell.md` guide.
 *   **JSON Processing:** `jq.exe` CLI (called from scripts)
 *   **Editor:** VS Code with PowerShell Extension (recommended)
 
 ---
 
-By following these guidelines, we can build a high-quality, maintainable, and well-tested application efficiently. Please refer back to this document frequently and ask questions if anything is unclear. Let's get started!
+## 6. AI Assistant Session Startup Checklist
+
+When starting a new development session, follow these steps to orient yourself and prepare for the next task:
+
+1.  **Confirm Workspace:** Verify the current working directory is the project root (`D:\\ML-Projects\\machine-translation\\translator_win`). Check the `last_terminal_cwd` information provided or use `pwd` if unsure.
+2.  **Check Git Status:** Run `git status` to ensure the working directory is clean and identify the current branch (it should typically be `main` after a previous merge).
+3.  **Review Recent Commits:** Execute `git log -n 5 --oneline --graph` to view the latest commit history. Look for recent merges or feature commits to understand the most recently completed work.
+4.  **Check Branches:** Run `git branch -a` to list all local and remote branches. Confirm that completed feature branches have been deleted locally and remotely.
+5.  **Examine Project Structure:** Use `list_dir` on key directories like `./Scripts/Lib`, `./Tests`, and the root directory (`./`) to refamiliarize yourself with the code organization and locate relevant files.
+6.  **Consult Project Guidance:** Check this `CONTRIBUTING.md` file (using `read_file`), the main implementation plan (`guides/implementation_plan.md`), and potentially the main `README.md` for project goals, conventions, and status updates. Also check `guides/PROJECT_LEAD_GUIDE.md` if available.
+7.  **Ask the User:** Query the user (Lead Developer) for the current priority, the next task, or the specific GitHub Issue number to work on.
+
+---
 
 ## Troubleshooting Notes
 
